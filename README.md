@@ -9,6 +9,7 @@ from .models import apply_vars, SafeString
 
 
 class Welcomer(commands.Cog):
+
     def __init__(self, bot):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
@@ -107,5 +108,6 @@ class Welcomer(commands.Cog):
                     await channel.send('Invalid welcome message')
             else:
                 print('Welcomer plugin not found: {getattr(channel, "id", None}')
+
 def setup(bot):
 bot.add_cog(Welcomer(bot))
