@@ -2,29 +2,23 @@ import json
 import discord
 from box import Box
 from discord.ext import commands
-
 from .models import apply_vars, SafeString
-
-
 class Welcomer(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.db = bot.plugin_db.get_partition(self)
         self.invite_cache = {}
         bot.loop.create_task(self.populate_invite_cache())
-
     async def populate_invite_cache(self):
         await self.bot.wait_until_ready()
         for g in self.bot.guilds:
             self.invite_cache[g.id] = {i for i in await g.invites()}
-
     async def get_used_invite(self, guild):
         """Checks which invite is used in join via the following strategies:
         1. Check if invite doesn't exist anymore
         2. Check invite uses
         """
         update_invite_cache = {i for i in await guild.invites()}
-
         for i in self.invite_cache[guild.id]:
             if i in update_invite_cache:
                 # pass check 1
@@ -36,7 +30,6 @@ class Welcomer(commands.Cog):
                     if new_invite.uses > i.uses:
                         return new_invite
         return Box(default_box=True, default_box_attr='{unable to get invite}')
-
     def apply_vars_dict(self, member, message, invite):
         for k, v in message.items():
             if isinstance(v, dict):
@@ -46,7 +39,6 @@ class Welcomer(commands.Cog):
             if k == 'timestamp':
                 message[k] = v[:-1]
         return message
-
     def format_message(self, member, message, invite):
         try:
             message = json.loads(message)
@@ -57,13 +49,11 @@ class Welcomer(commands.Cog):
         else:
             # message is embed
             message = self.apply_vars_dict(member, message, invite)
-
             if any(i in message for i in ('embed', 'content')):
                 message['embed'] = discord.Embed.from_data(message['embed'])
             else:
                 message = None
         return message
-
     @commands.has_permissions(manage_guild=True)
     @commands.command()
     async def welcomer(self, ctx, channel: discord.TextChannel, *, message):
@@ -75,10 +65,8 @@ class Welcomer(commands.Cog):
             # message is a URL
             if message.startswith('https://hasteb.in/'):
                 message = 'https://hasteb.in/raw/' + message.split('/')[-1]
-
             async with self.bot.session.get(message) as resp:
                 message = await resp.text()
-
         formatted_message = self.format_message(ctx.author, message, SafeString('{invite}'))
         if formatted_message:
             await channel.send(**formatted_message)
@@ -90,7 +78,6 @@ class Welcomer(commands.Cog):
             await ctx.send(f'Message sent to {channel.mention} for testing.\nNote: invites cannot be rendered in test message')
         else:
             await ctx.send('Invalid welcome message syntax.')
-
     @commands.Cog.listener()
     async def on_member_join(self, member):
         invite = await self.get_used_invite(member.guild)
