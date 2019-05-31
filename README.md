@@ -1,5 +1,4 @@
 import json
-
 import discord
 from box import Box
 from discord.ext import commands
@@ -106,7 +105,5 @@ class Welcomer(commands.Cog):
                     await channel.send('Invalid welcome message')
             else:
                 print('Welcomer plugin not found: {getattr(channel, "id", None}')
-
-
 def setup(bot):
 bot.add_cog(Welcomer(bot))
