@@ -68,7 +68,7 @@ class Welcomer(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     @commands.command()
     async def welcomer(self, ctx, channel: discord.TextChannel, *, message):
-        """Sets up welcome command. Check [here](https://github.com/fourjr/modmail-plugins/blob/master/welcomer/README.md)
+        """Sets up welcome command. Check [here](https://github.com/allipsee/welcome-plugin/blob/master/README.md)
         for complex usage.
         Example usage: `welcomer #general Hello {member.name}`
         """
@@ -110,4 +110,4 @@ class Welcomer(commands.Cog):
 
 def setup(bot:)
 
-   bot.add_cog(Welcomer(bot))
+bot.add_cog(Welcomer(bot))
