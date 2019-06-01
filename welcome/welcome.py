@@ -109,4 +109,4 @@ class Welcomer(commands.Cog):
 
 
 def setup(bot):
-bot.add_cog(Welcomer(bot)
+    bot.add_cog(Welcomer(bot)
