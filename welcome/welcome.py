@@ -108,5 +108,5 @@ class Welcomer(commands.Cog):
                 print('Welcomer plugin not found: {getattr(channel, "id", None}')
 
 
-def setup(bot):
+def setup(bot):https://github.com/allipsee/welcome-plugin/blob/master/README.md
     bot.add_cog(Welcomer(bot))
